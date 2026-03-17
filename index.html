@@ -15,509 +15,440 @@
     --mid: #6b6560;
     --rule: #d4cfc5;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--paper);
     color: var(--ink);
     font-family: 'Libre Baskerville', serif;
     overflow-x: hidden;
   }
-
-  /* ── NOISE TEXTURE OVERLAY ── */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    opacity: .5;
+    pointer-events: none; opacity: .5;
   }
 
-  /* ── HEADER ── */
+  /* HEADER */
   header {
     position: relative; z-index: 10;
     border-bottom: 2px solid var(--ink);
-    padding: 0 clamp(1.5rem, 5vw, 5rem);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: end;
-    gap: 2rem;
-    padding-top: 3.5rem;
-    padding-bottom: 2rem;
+    padding: 3.5rem clamp(1.5rem,5vw,5rem) 2rem;
     animation: fadeUp .8s ease both;
   }
-
-  .header-left { max-width: 680px; }
-
+  .header-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 2rem; flex-wrap: wrap;
+  }
   .eyebrow {
     font-family: 'Space Mono', monospace;
-    font-size: .7rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: .75rem;
+    font-size: .7rem; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: .75rem;
   }
-
-  h1 {
-    font-size: clamp(3rem, 8vw, 6.5rem);
-    line-height: .95;
-    letter-spacing: -.02em;
-    font-weight: 700;
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .subtitle {
-    margin-top: 1.25rem;
-    font-size: 1rem;
-    color: var(--mid);
-    line-height: 1.6;
-    max-width: 480px;
-  }
-
-  .header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: .5rem;
-    padding-bottom: .3rem;
-  }
-
+  h1 { font-size: clamp(3rem,8vw,6.5rem); line-height: .95; letter-spacing: -.02em; font-weight: 700; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { margin-top: 1.25rem; font-size: 1rem; color: var(--mid); line-height: 1.6; max-width: 520px; }
+  .header-tags { display: flex; flex-direction: column; align-items: flex-end; gap: .5rem; padding-top: .3rem; }
   .tag-pill {
-    font-family: 'Space Mono', monospace;
-    font-size: .65rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    border: 1px solid var(--ink);
-    padding: .3rem .7rem;
-    white-space: nowrap;
+    font-family: 'Space Mono', monospace; font-size: .65rem;
+    letter-spacing: .1em; text-transform: uppercase;
+    border: 1px solid var(--ink); padding: .3rem .7rem; white-space: nowrap;
   }
-
   .tag-pill.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-  /* ── NAV ── */
+  /* NAV */
   nav {
-    position: relative; z-index: 10;
+    position: sticky; top: 0; z-index: 100;
     border-bottom: 1px solid var(--rule);
-    display: flex; gap: 2.5rem;
-    padding: 1rem clamp(1.5rem, 5vw, 5rem);
+    background: var(--paper);
+    display: flex; align-items: center;
+    padding: 0 clamp(1.5rem,5vw,5rem);
     overflow-x: auto;
     animation: fadeUp .8s .1s ease both;
   }
-
   nav a {
-    font-family: 'Space Mono', monospace;
-    font-size: .72rem;
-    text-transform: uppercase;
-    letter-spacing: .15em;
-    color: var(--mid);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: color .2s;
+    font-family: 'Space Mono', monospace; font-size: .72rem;
+    text-transform: uppercase; letter-spacing: .15em;
+    color: var(--mid); text-decoration: none;
+    white-space: nowrap; padding: 1rem 1.2rem 1rem 0;
+    transition: color .2s; flex-shrink: 0;
   }
   nav a:hover { color: var(--accent); }
 
-  /* ── MAIN GRID ── */
+  /* LANG TOGGLE */
+  .lang-toggle {
+    margin-left: auto; flex-shrink: 0;
+    display: flex; align-items: center;
+    border: 1px solid var(--ink); overflow: hidden;
+  }
+  .lang-toggle button {
+    background: none; border: none; cursor: pointer;
+    padding: .45rem .85rem;
+    font-family: 'Space Mono', monospace; font-size: .7rem;
+    letter-spacing: .05em; color: var(--mid); transition: all .2s;
+  }
+  .lang-toggle button.active { background: var(--ink); color: var(--paper); }
+  .lang-toggle button:hover:not(.active) { color: var(--accent); }
+
+  /* MAIN GRID */
   main {
     position: relative; z-index: 5;
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 0;
-    padding: 0 clamp(1.5rem, 5vw, 5rem);
-    max-width: 1400px;
-    margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 320px;
+    padding: 0 clamp(1.5rem,5vw,5rem);
+    max-width: 1400px; margin: 0 auto;
   }
-
   .col-left { border-right: 1px solid var(--rule); padding-right: 3rem; padding-top: 3rem; padding-bottom: 6rem; }
   .col-right { padding-left: 2.5rem; padding-top: 3rem; }
 
-  /* ── SECTION HEADERS ── */
+  /* SECTION */
   .section { margin-bottom: 4rem; }
-
   .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: .65rem;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border-top: 2px solid var(--ink);
-    padding-top: .6rem;
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    font-family: 'Space Mono', monospace; font-size: .65rem;
+    letter-spacing: .25em; text-transform: uppercase; color: var(--accent);
+    border-top: 2px solid var(--ink); padding-top: .6rem; margin-bottom: 2rem;
+    display: flex; justify-content: space-between; align-items: baseline;
   }
-
   .section-label span { color: var(--mid); font-size: .6rem; }
 
-  /* ── EXPERIENCE CARDS ── */
-  .exp-item {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--rule);
-    animation: fadeUp .6s ease both;
-  }
-
-  .exp-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
-    align-items: start;
-    margin-bottom: .75rem;
-  }
-
-  .exp-company {
-    font-family: 'Space Mono', monospace;
-    font-size: .65rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: .25rem;
-  }
-
-  .exp-role {
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .exp-date {
-    font-family: 'Space Mono', monospace;
-    font-size: .6rem;
-    color: var(--mid);
-    text-align: right;
-    white-space: nowrap;
-    padding-top: .2rem;
-  }
-
-  .exp-bullets {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-  }
-
-  .exp-bullets li {
-    font-size: .88rem;
-    color: var(--mid);
-    line-height: 1.6;
-    padding-left: 1rem;
-    position: relative;
-  }
-
-  .exp-bullets li::before {
-    content: '—';
-    position: absolute; left: 0;
-    color: var(--accent);
-    font-size: .7rem;
-  }
-
-  .highlight { color: var(--ink); font-weight: 700; }
-
-  /* ── STATS ROW ── */
+  /* STATS */
   .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    margin-bottom: 3rem;
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 3rem;
+  }
+  .stat-box { background: var(--paper); padding: 1.3rem 1rem; text-align: center; }
+  .stat-num { font-size: 1.9rem; font-weight: 700; font-style: italic; color: var(--accent); line-height: 1; }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; color: var(--mid); margin-top: .4rem; }
+
+  /* EXPERIENCE */
+  .exp-item { padding: 1.5rem 0; border-bottom: 1px solid var(--rule); animation: fadeUp .6s ease both; }
+  .exp-header { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; margin-bottom: .75rem; }
+  .exp-company { font-family: 'Space Mono', monospace; font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .25rem; }
+  .exp-role { font-size: 1.05rem; font-weight: 700; line-height: 1.25; }
+  .exp-date { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--mid); text-align: right; white-space: nowrap; padding-top: .2rem; }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+  .exp-bullets li { font-size: .87rem; color: var(--mid); line-height: 1.65; padding-left: 1rem; position: relative; }
+  .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-size: .7rem; }
+  .hl { color: var(--ink); font-weight: 700; }
+
+  /* QUOTE */
+  .big-quote {
+    font-size: clamp(1rem,2.2vw,1.3rem); font-style: italic;
+    line-height: 1.65; color: var(--mid);
+    border-left: 3px solid var(--accent); padding-left: 1.5rem; margin: 3rem 0;
   }
 
-  .stat-box {
-    background: var(--paper);
-    padding: 1.5rem 1.25rem;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-size: 2.2rem;
-    font-weight: 700;
-    font-style: italic;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--mid);
-    margin-top: .4rem;
-  }
-
-  /* ── SKILLS SIDEBAR ── */
+  /* SKILLS */
   .skill-group { margin-bottom: 2rem; }
-
-  .skill-group-title {
-    font-family: 'Space Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: .75rem;
-  }
-
+  .skill-group-title { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
   .skill-tag {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: .62rem;
-    padding: .25rem .55rem;
-    border: 1px solid var(--rule);
-    margin: .2rem .15rem .2rem 0;
-    transition: all .2s;
-    cursor: default;
+    display: inline-block; font-family: 'Space Mono', monospace;
+    font-size: .6rem; padding: .25rem .55rem;
+    border: 1px solid var(--rule); margin: .2rem .15rem .2rem 0;
+    transition: all .2s; cursor: default;
   }
   .skill-tag:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-  /* ── AWARDS ── */
-  .award-item {
-    padding: .9rem 0;
-    border-bottom: 1px solid var(--rule);
-  }
+  /* AWARDS */
+  .award-item { padding: .9rem 0; border-bottom: 1px solid var(--rule); }
+  .award-title { font-size: .88rem; font-weight: 700; line-height: 1.4; margin-bottom: .2rem; }
+  .award-meta { font-family: 'Space Mono', monospace; font-size: .6rem; color: var(--mid); letter-spacing: .05em; }
 
-  .award-title {
-    font-size: .88rem;
-    font-weight: 700;
-    line-height: 1.4;
-    margin-bottom: .2rem;
-  }
-
-  .award-meta {
-    font-family: 'Space Mono', monospace;
-    font-size: .6rem;
-    color: var(--mid);
-    letter-spacing: .05em;
-  }
-
-  /* ── CONTACT ── */
-  .contact-block {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 1.75rem;
-    margin-top: 2rem;
-  }
-
-  .contact-block .section-label { border-top-color: var(--paper); color: var(--gold); }
-  .contact-block .section-label span { color: rgba(245,240,232,.4); }
-
+  /* CONTACT */
+  .contact-block { background: var(--ink); color: var(--paper); padding: 1.75rem; margin-top: 2rem; }
   .contact-link {
-    display: block;
-    font-family: 'Space Mono', monospace;
-    font-size: .65rem;
-    color: var(--paper);
-    text-decoration: none;
-    padding: .5rem 0;
-    border-bottom: 1px solid rgba(245,240,232,.15);
-    letter-spacing: .05em;
-    transition: color .2s;
+    display: block; font-family: 'Space Mono', monospace; font-size: .63rem;
+    color: var(--paper); text-decoration: none; padding: .5rem 0;
+    border-bottom: 1px solid rgba(245,240,232,.15); letter-spacing: .05em; transition: color .2s;
   }
   .contact-link:hover { color: var(--gold); }
   .contact-link:last-child { border-bottom: none; }
-
   .contact-label { color: var(--gold); margin-right: .5rem; }
 
-  /* ── QUOTE ── */
-  .big-quote {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    font-style: italic;
-    line-height: 1.6;
-    color: var(--mid);
-    border-left: 3px solid var(--accent);
-    padding-left: 1.5rem;
-    margin: 3rem 0;
-  }
-
-  /* ── FOOTER ── */
+  /* FOOTER */
   footer {
     position: relative; z-index: 5;
     border-top: 2px solid var(--ink);
-    padding: 1.5rem clamp(1.5rem, 5vw, 5rem);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    padding: 1.5rem clamp(1.5rem,5vw,5rem);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
   }
+  footer p { font-family: 'Space Mono', monospace; font-size: .62rem; color: var(--mid); letter-spacing: .08em; }
 
-  footer p {
-    font-family: 'Space Mono', monospace;
-    font-size: .62rem;
-    color: var(--mid);
-    letter-spacing: .08em;
-  }
-
-  /* ── ANIMATIONS ── */
+  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  .exp-item:nth-child(1){animation-delay:.1s}
+  .exp-item:nth-child(2){animation-delay:.2s}
+  .exp-item:nth-child(3){animation-delay:.3s}
+  .exp-item:nth-child(4){animation-delay:.4s}
+  .exp-item:nth-child(5){animation-delay:.5s}
 
-  .exp-item:nth-child(1) { animation-delay: .1s; }
-  .exp-item:nth-child(2) { animation-delay: .2s; }
-  .exp-item:nth-child(3) { animation-delay: .3s; }
-  .exp-item:nth-child(4) { animation-delay: .4s; }
-  .exp-item:nth-child(5) { animation-delay: .5s; }
+  /* I18N — hide everything by default, show based on body class */
+  .zh, .en { display: none; }
+  .lang-zh .zh { display: revert; }
+  .lang-en .en { display: revert; }
+  li.zh, li.en { display: none; }
+  .lang-zh li.zh { display: list-item; }
+  .lang-en li.en { display: list-item; }
 
-  /* ── RESPONSIVE ── */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     main { grid-template-columns: 1fr; }
     .col-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--rule); padding-bottom: 3rem; }
     .col-right { padding-left: 0; }
-    header { grid-template-columns: 1fr; }
-    .header-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+    .header-tags { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  }
+  @media (max-width: 600px) {
+    .exp-header { grid-template-columns: 1fr; }
+    .exp-date { text-align: left; }
   }
 </style>
 </head>
-<body>
+<body class="lang-zh">
 
+<!-- HEADER -->
 <header>
-  <div class="header-left">
-    <p class="eyebrow">Portfolio · 个人主页</p>
-    <h1>主浩成<br><em>Haocheng</em> Zhu</h1>
-    <p class="subtitle">数学与金融双背景 · 量化研究 · 行业咨询<br>Quant Research · Industry Consulting · FinTech</p>
-  </div>
-  <div class="header-right">
-    <span class="tag-pill accent">可实习 5天/周</span>
-    <span class="tag-pill">福州大学 211</span>
-    <span class="tag-pill">2027届</span>
+  <div class="header-top">
+    <div>
+      <p class="eyebrow">
+        <span class="zh">个人主页 · Portfolio</span>
+        <span class="en">Portfolio · 个人主页</span>
+      </p>
+      <h1>
+        <span class="zh">主浩成<br><em>Haocheng</em> Zhu</span>
+        <span class="en"><em>Haocheng</em> Zhu<br>主浩成</span>
+      </h1>
+      <p class="subtitle">
+        <span class="zh">数学与金融双背景 · 量化研究 · 行业咨询 · FinTech</span>
+        <span class="en">Math × Finance · Quant Research · Strategy Consulting · FinTech</span>
+      </p>
+    </div>
+    <div class="header-tags">
+      <span class="tag-pill accent">
+        <span class="zh">可实习 5天/周</span>
+        <span class="en">Available 5 days/week</span>
+      </span>
+      <span class="tag-pill">
+        <span class="zh">福州大学 211</span>
+        <span class="en">Fuzhou University 211</span>
+      </span>
+      <span class="tag-pill">
+        <span class="zh">2027届</span>
+        <span class="en">Class of 2027</span>
+      </span>
+    </div>
   </div>
 </header>
 
+<!-- NAV -->
 <nav>
-  <a href="#experience">实习经历</a>
-  <a href="#skills">专业技能</a>
-  <a href="#awards">获奖情况</a>
-  <a href="#education">教育背景</a>
-  <a href="#contact">联系方式</a>
+  <a href="#experience"><span class="zh">实习经历</span><span class="en">Experience</span></a>
+  <a href="#skills"><span class="zh">专业技能</span><span class="en">Skills</span></a>
+  <a href="#awards"><span class="zh">获奖情况</span><span class="en">Awards</span></a>
+  <a href="#education"><span class="zh">教育背景</span><span class="en">Education</span></a>
+  <a href="#contact"><span class="zh">联系方式</span><span class="en">Contact</span></a>
+  <div class="lang-toggle">
+    <button id="btn-zh" class="active" onclick="setLang('zh')">中文</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
 </nav>
 
+<!-- MAIN -->
 <main>
-  <!-- LEFT COLUMN -->
   <div class="col-left">
 
     <!-- STATS -->
-    <div class="stats-row" style="animation: fadeUp .7s .2s ease both; opacity:0; animation-fill-mode:both;">
+    <div class="stats-row" style="animation:fadeUp .7s .2s ease both;opacity:0;animation-fill-mode:both">
       <div class="stat-box">
         <div class="stat-num">5+</div>
-        <div class="stat-label">段实习经历</div>
+        <div class="stat-label"><span class="zh">段实习</span><span class="en">Internships</span></div>
       </div>
       <div class="stat-box">
         <div class="stat-num">20%</div>
-        <div class="stat-label">年化收益</div>
+        <div class="stat-label"><span class="zh">年化收益</span><span class="en">Ann. Return</span></div>
       </div>
       <div class="stat-box">
         <div class="stat-num">500+</div>
-        <div class="stat-label">人量化社群</div>
+        <div class="stat-label"><span class="zh">量化社群</span><span class="en">Quant Community</span></div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">50+</div>
+        <div class="stat-label"><span class="zh">策略报告</span><span class="en">Reports</span></div>
       </div>
     </div>
 
     <!-- EXPERIENCE -->
     <div class="section" id="experience">
-      <div class="section-label">实习经历 <span>Internship Experience</span></div>
+      <div class="section-label">
+        <span class="zh">实习经历</span><span class="en">Internship Experience</span>
+        <span><span class="zh">按时间倒序</span><span class="en">Most Recent First</span></span>
+      </div>
 
+      <!-- 迈哲华 -->
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">迈哲华咨询</div>
-            <div class="exp-role">见习分析师</div>
+            <div class="exp-company">迈哲华咨询 · The Martec Group</div>
+            <div class="exp-role">
+              <span class="zh">见习分析师</span>
+              <span class="en">Associate Analyst</span>
+            </div>
           </div>
-          <div class="exp-date">2026.02 — 2026.05</div>
+          <div class="exp-date">
+            <span class="zh">2026.02 — 2026.05</span>
+            <span class="en">Feb 2026 — May 2026</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>主导<span class="highlight">人型机器人及汽车行业</span>市场研究，构建优先级筛选模型，输出洞察报告 10 份</li>
-          <li>参与 <span class="highlight">10+ 战略咨询项目</span>，独立搭建价值链框架，完成标的评估与风险研判</li>
-          <li>独立对接 3 家本土龙头企业，协助客户明确<span class="highlight">海外市场进入策略</span></li>
+          <li class="zh">主导<span class="hl">人型机器人及汽车行业</span>市场研究，构建优先级筛选模型，输出洞察报告 10 份，直接支持客户在华市场布局决策</li>
+          <li class="zh">参与 <span class="hl">10+ 战略咨询项目</span>，独立搭建价值链框架，完成标的评估与风险研判，输出可落地客户决策建议</li>
+          <li class="zh">独立对接 3 家本土龙头企业，定期同步项目进展，协助客户明确<span class="hl">海外市场进入策略</span></li>
+          <li class="en">Led market research on <span class="hl">humanoid robotics & automotive sectors</span>; built priority-screening models; delivered 10 industry reports supporting client China expansion decisions.</li>
+          <li class="en">Participated in <span class="hl">10+ strategic consulting projects</span>; built value chain frameworks and completed target assessment and risk evaluation.</li>
+          <li class="en">Managed 3 major domestic enterprise clients; helped define <span class="hl">overseas market entry strategies</span>.</li>
         </ul>
       </div>
 
+      <!-- 建信 -->
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">建信金融科技</div>
-            <div class="exp-role">量化实习生</div>
+            <div class="exp-company">建信金融科技 · CCB FinTech</div>
+            <div class="exp-role">
+              <span class="zh">量化实习生</span>
+              <span class="en">Quantitative Research Intern</span>
+            </div>
           </div>
-          <div class="exp-date">2025.09 — 2026.01</div>
+          <div class="exp-date">
+            <span class="zh">2025.09 — 2026.01</span>
+            <span class="en">Sep 2025 — Jan 2026</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>基于金融 API 构建股票数据管道，完成清洗、时序对齐与特征工程</li>
-          <li>复现行研报告 <span class="highlight">20+ 篇</span>，构建并回测 <span class="highlight">500+ 选股因子</span>，策略年化超额收益约 10%</li>
-          <li>建立 GitHub 代码规范体系，输出因子评估报告 30+ 篇供团队复用</li>
+          <li class="zh">基于金融 API 构建股票数据管道，完成清洗、时序对齐与特征工程，为量化研究提供标准化数据基础</li>
+          <li class="zh">复现行研报告 <span class="hl">20+ 篇</span>，构建并回测 <span class="hl">500+ 选股因子</span>，策略年化超额收益约 10%，形成 10 套可部署策略</li>
+          <li class="zh">建立 GitHub 代码规范体系，输出因子评估报告 <span class="hl">30+ 篇</span>供团队复用</li>
+          <li class="en">Built stock data pipelines via financial APIs; performed data cleaning, time-series alignment, and feature engineering.</li>
+          <li class="en">Reproduced <span class="hl">20+ industry quant reports</span>; constructed and backtested <span class="hl">500+ alpha factors</span>; achieved ~10% annualized excess return; built 10 deployable strategies.</li>
+          <li class="en">Established GitHub code management system; published <span class="hl">30+ factor evaluation reports</span> for team reuse.</li>
         </ul>
       </div>
 
+      <!-- 信保 -->
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">中国出口信用保险公司</div>
-            <div class="exp-role">理赔部实习生</div>
+            <div class="exp-company">中国出口信用保险公司 · Sinosure</div>
+            <div class="exp-role">
+              <span class="zh">理赔部实习生</span>
+              <span class="en">Claims Department Intern</span>
+            </div>
           </div>
-          <div class="exp-date">2025.07 — 2025.08</div>
+          <div class="exp-date">
+            <span class="zh">2025.07 — 2025.08</span>
+            <span class="en">Jul 2025 — Aug 2025</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>整理 <span class="highlight">120+ 家企业</span>贸易信用保险理赔材料，合规率 100%</li>
-          <li>整合信保、海关及征信平台多源数据，用 Excel 构建理赔数据汇总模型</li>
-          <li>独立完成 3 份新兴市场专题研究报告，被用于<span class="highlight">部门承保决策</span></li>
+          <li class="zh">整理 <span class="hl">120+ 家企业</span>贸易信用保险理赔材料，合规率 <span class="hl">100%</span></li>
+          <li class="zh">整合信保、海关及征信平台多源数据，用 Excel 构建理赔数据汇总模型，支持部门业务决策分析</li>
+          <li class="zh">独立完成 3 份新兴市场专题研究报告，被用于<span class="hl">部门承保决策</span></li>
+          <li class="en">Processed <span class="hl">120+ enterprise</span> trade credit insurance claim files with <span class="hl">100% compliance rate</span>.</li>
+          <li class="en">Integrated multi-source data (Sinosure, customs, credit platforms); built Excel-based claims summary model.</li>
+          <li class="en">Authored <span class="hl">3 emerging market research reports</span> on China overseas risk; adopted for department underwriting decisions.</li>
         </ul>
       </div>
 
+      <!-- 华福 -->
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">华福证券 · 新浪财经金麒麟团队</div>
-            <div class="exp-role">行研实习生 — 家电 & 可选消费组</div>
+            <div class="exp-company">华福证券 · Huafu Security</div>
+            <div class="exp-role">
+              <span class="zh">行研实习生 — 家电 & 可选消费组</span>
+              <span class="en">Equity Research Intern — Home Appliances & Consumer</span>
+            </div>
           </div>
-          <div class="exp-date">2024.09 — 2024.12</div>
+          <div class="exp-date">
+            <span class="zh">2024.09 — 2024.12</span>
+            <span class="en">Sep 2024 — Dec 2024</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>用 Wind、iFind 构建家电行业数据库，覆盖 <span class="highlight">20+ 上市公司</span>核心财务指标</li>
-          <li>独立撰写服务机器人深度研究报告 <span class="highlight">3 篇</span>，经首席采纳后发表至公司网站</li>
-          <li>累计输出日报 30+、周报 10+ 篇，为投研团队提供及时信息支撑</li>
+          <li class="zh">用 Wind、iFind 构建家电行业数据库，覆盖 <span class="hl">20+ 上市公司</span>核心财务指标</li>
+          <li class="zh">独立撰写服务机器人深度研究报告 <span class="hl">3 篇</span>，经首席采纳后发表至公司网站</li>
+          <li class="zh">累计输出日报 <span class="hl">30+</span>、周报 <span class="hl">10+</span> 篇，为投研团队提供及时信息支撑</li>
+          <li class="en">Built home appliance industry database in Wind & iFind covering <span class="hl">20+ listed companies</span>' core financial metrics.</li>
+          <li class="en">Authored <span class="hl">3 deep-dive service robot reports</span>; published on company website after chief analyst adoption.</li>
+          <li class="en">Produced <span class="hl">30+ daily</span> and <span class="hl">10+ weekly</span> briefings for the investment research team.</li>
         </ul>
       </div>
 
+      <!-- 建行 -->
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">中国建设银行</div>
-            <div class="exp-role">国际业务部实习生</div>
+            <div class="exp-company">中国建设银行 · China Construction Bank</div>
+            <div class="exp-role">
+              <span class="zh">国际业务部实习生</span>
+              <span class="en">International Business Department Intern</span>
+            </div>
           </div>
-          <div class="exp-date">2024.07 — 2024.08</div>
+          <div class="exp-date">
+            <span class="zh">2024.07 — 2024.08</span>
+            <span class="en">Jul 2024 — Aug 2024</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>完成 <span class="highlight">10+ 家企业</span>信贷及贸易背景尽调，核验合规信息 200+ 份，零差错率</li>
-          <li>梳理福建省 <span class="highlight">100+ 家企业</span>征信数据与授信档案，规范化归档</li>
-          <li>对接普惠金融部，全流程支撑产品调研与业务落地适配</li>
+          <li class="zh">完成 <span class="hl">10+ 家企业</span>信贷及贸易背景尽调，核验合规信息 <span class="hl">200+ 份</span>，零差错率提交</li>
+          <li class="zh">梳理福建省 <span class="hl">100+ 家企业</span>征信数据与授信档案，规范化归档，支撑信贷审批</li>
+          <li class="zh">对接普惠金融部，全流程支撑产品调研与业务落地适配</li>
+          <li class="en">Completed due diligence on <span class="hl">10+ enterprises</span>; verified <span class="hl">200+ compliance documents</span> with zero error rate.</li>
+          <li class="en">Organized credit data for <span class="hl">100+ Fujian enterprises</span>; standardized archiving per regulatory requirements.</li>
+          <li class="en">Coordinated with Inclusive Finance Dept; supported full-cycle product research and business deployment.</li>
         </ul>
       </div>
     </div>
 
     <!-- QUOTE -->
     <blockquote class="big-quote">
-      "数学与金融双背景，具备量化研究全链路实践能力，习惯以自动化思维提升研究效率。"
+      <span class="zh">"数学与金融双背景，具备量化研究全链路实践能力，习惯以自动化思维提升研究效率。"</span>
+      <span class="en">"Math-Finance dual background with end-to-end quant research experience. I default to automation thinking to compound research efficiency."</span>
     </blockquote>
 
     <!-- EDUCATION -->
     <div class="section" id="education">
-      <div class="section-label">教育背景 <span>Education</span></div>
+      <div class="section-label">
+        <span class="zh">教育背景</span><span class="en">Education</span>
+        <span><span class="zh">在读</span><span class="en">In Progress</span></span>
+      </div>
       <div class="exp-item">
         <div class="exp-header">
           <div>
-            <div class="exp-company">福州大学（211）</div>
-            <div class="exp-role">数理金融实验班 · 本科</div>
+            <div class="exp-company">
+              <span class="zh">福州大学（211）</span>
+              <span class="en">Fuzhou University (211)</span>
+            </div>
+            <div class="exp-role">
+              <span class="zh">数理金融实验班 · 本科</span>
+              <span class="en">Mathematical Finance Experimental Class · B.Sc.</span>
+            </div>
           </div>
-          <div class="exp-date">2023.09 — 2027.06</div>
+          <div class="exp-date">
+            <span class="zh">2023.09 — 2027.06</span>
+            <span class="en">Sep 2023 — Jun 2027</span>
+          </div>
         </div>
         <ul class="exp-bullets">
-          <li>主修数学与应用数学，辅修金融学 · GPA 3.1（<span class="highlight">TOP 30%</span>）</li>
-          <li>核心课程：Python金融科技、大数据与人工智能、数学建模、概率论与数理统计</li>
-          <li>数据科学社团部长 · 数学建模社团成员 · 计算机协会成员</li>
+          <li class="zh">主修数学与应用数学，辅修金融学 · GPA 3.1（<span class="hl">TOP 30%</span>）</li>
+          <li class="zh">核心课程：Python金融科技、大数据与人工智能、数学建模、概率论与数理统计</li>
+          <li class="zh">数据科学社团部长 · 数学建模社团成员 · 计算机协会成员</li>
+          <li class="en">Major: Mathematics & Applied Mathematics · Minor: Finance · GPA 3.1 (<span class="hl">TOP 30%</span>)</li>
+          <li class="en">Key courses: Python FinTech, Big Data & AI, Mathematical Modeling, Probability & Statistics</li>
+          <li class="en">President, Data Science Club · Member, Math Modeling Club · Member, Computer Association</li>
         </ul>
       </div>
     </div>
@@ -529,10 +460,12 @@
 
     <!-- SKILLS -->
     <div class="section" id="skills">
-      <div class="section-label">专业技能 <span>Skills</span></div>
+      <div class="section-label">
+        <span class="zh">专业技能</span><span class="en">Skills</span>
+      </div>
 
       <div class="skill-group">
-        <div class="skill-group-title">编程 & 数据</div>
+        <div class="skill-group-title"><span class="zh">编程 & 数据</span><span class="en">Programming & Data</span></div>
         <span class="skill-tag">Python</span>
         <span class="skill-tag">R</span>
         <span class="skill-tag">SQL</span>
@@ -543,79 +476,112 @@
       </div>
 
       <div class="skill-group">
-        <div class="skill-group-title">金融工具</div>
+        <div class="skill-group-title"><span class="zh">金融工具</span><span class="en">Finance Tools</span></div>
         <span class="skill-tag">Wind</span>
         <span class="skill-tag">iFind</span>
-        <span class="skill-tag">金融API</span>
-        <span class="skill-tag">因子回测</span>
-        <span class="skill-tag">量化策略</span>
+        <span class="skill-tag"><span class="zh">金融API</span><span class="en">Financial API</span></span>
+        <span class="skill-tag"><span class="zh">因子回测</span><span class="en">Factor Backtest</span></span>
+        <span class="skill-tag"><span class="zh">量化策略</span><span class="en">Quant Strategy</span></span>
       </div>
 
       <div class="skill-group">
-        <div class="skill-group-title">AI & 自动化</div>
+        <div class="skill-group-title">AI & <span class="zh">自动化</span><span class="en">Automation</span></div>
         <span class="skill-tag">Coze Workflow</span>
         <span class="skill-tag">AI Agent</span>
-        <span class="skill-tag">LLM应用</span>
-        <span class="skill-tag">研究自动化</span>
+        <span class="skill-tag">LLM</span>
+        <span class="skill-tag"><span class="zh">研究自动化</span><span class="en">Research Automation</span></span>
       </div>
 
       <div class="skill-group">
-        <div class="skill-group-title">语言</div>
+        <div class="skill-group-title"><span class="zh">语言</span><span class="en">Language</span></div>
         <span class="skill-tag">CET-6 500+</span>
         <span class="skill-tag">CET-4 600+</span>
-        <span class="skill-tag">Reddit活跃用户</span>
-        <span class="skill-tag">Discord社区</span>
+        <span class="skill-tag">Reddit</span>
+        <span class="skill-tag">Discord</span>
       </div>
     </div>
 
     <!-- AWARDS -->
     <div class="section" id="awards">
-      <div class="section-label">获奖情况 <span>Awards</span></div>
+      <div class="section-label">
+        <span class="zh">获奖情况</span><span class="en">Awards</span>
+      </div>
 
       <div class="award-item">
-        <div class="award-title">全国大学生数据分析实践赛</div>
-        <div class="award-meta">一等奖 · 全国</div>
+        <div class="award-title">
+          <span class="zh">全国大学生数据分析实践赛</span>
+          <span class="en">National Undergraduate Data Analysis Competition</span>
+        </div>
+        <div class="award-meta">
+          <span class="zh">一等奖 · 全国</span>
+          <span class="en">1st Prize · National</span>
+        </div>
       </div>
+
       <div class="award-item">
-        <div class="award-title">福建省宏观经济学会年会论文</div>
-        <div class="award-meta">三等奖 · 2024 · 经管实证+LLM+数据分析</div>
+        <div class="award-title">
+          <span class="zh">福建省宏观经济学会年会论文</span>
+          <span class="en">Fujian Macroeconomics Association Annual Conference</span>
+        </div>
+        <div class="award-meta">
+          <span class="zh">三等奖 · 2024 · 经管实证+LLM+数据分析</span>
+          <span class="en">3rd Prize · 2024 · Empirical + LLM + Data Analysis</span>
+        </div>
       </div>
+
       <div class="award-item">
-        <div class="award-title">"电工杯"数学建模竞赛</div>
-        <div class="award-meta">全国三等奖</div>
+        <div class="award-title">
+          <span class="zh">"电工杯"数学建模竞赛</span>
+          <span class="en">"Diangong Cup" Mathematical Modeling</span>
+        </div>
+        <div class="award-meta">
+          <span class="zh">全国三等奖</span>
+          <span class="en">National 3rd Prize</span>
+        </div>
       </div>
+
       <div class="award-item">
-        <div class="award-title">全国大学生计算机设计大赛</div>
-        <div class="award-meta">大数据主题赛省三等奖</div>
+        <div class="award-title">
+          <span class="zh">全国大学生计算机设计大赛</span>
+          <span class="en">National Undergraduate Computer Design Competition</span>
+        </div>
+        <div class="award-meta">
+          <span class="zh">大数据主题赛省三等奖</span>
+          <span class="en">Big Data Track · Provincial 3rd Prize</span>
+        </div>
       </div>
     </div>
 
     <!-- CONTACT -->
     <div class="contact-block" id="contact">
-      <div class="section-label" style="border-top-color: rgba(245,240,232,.3); color: #b8860b;">
-        联系方式 <span style="color:rgba(245,240,232,.35);">Contact</span>
+      <div class="section-label" style="border-top-color:rgba(245,240,232,.3);color:#b8860b;">
+        <span class="zh">联系方式</span><span class="en">Contact</span>
+        <span style="color:rgba(245,240,232,.35)"><span class="zh">欢迎沟通</span><span class="en">Open to opportunities</span></span>
       </div>
-      <a class="contact-link" href="tel:15666839912">
-        <span class="contact-label">TEL</span>156 6683 9912
-      </a>
-      <a class="contact-link" href="mailto:787382958@qq.com">
-        <span class="contact-label">EMAIL</span>787382958@qq.com
-      </a>
-      <a class="contact-link" href="https://www.linkedin.com/in/haocheng-zhu-170381392" target="_blank">
-        <span class="contact-label">LINKEDIN</span>haocheng-zhu-170381392
-      </a>
-      <a class="contact-link" href="https://github.com/Fzufixer" target="_blank">
-        <span class="contact-label">GITHUB</span>github.com/Fzufixer
-      </a>
+      <a class="contact-link" href="tel:15666839912"><span class="contact-label">TEL</span>156 6683 9912</a>
+      <a class="contact-link" href="mailto:787382958@qq.com"><span class="contact-label">EMAIL</span>787382958@qq.com</a>
+      <a class="contact-link" href="https://www.linkedin.com/in/haocheng-zhu-170381392" target="_blank"><span class="contact-label">LINKEDIN</span>haocheng-zhu-170381392</a>
+      <a class="contact-link" href="https://github.com/Fzufixer" target="_blank"><span class="contact-label">GITHUB</span>github.com/Fzufixer</a>
     </div>
 
   </div>
 </main>
 
 <footer>
-  <p>主浩成 · Haocheng Zhu · 福州大学 2027届</p>
+  <p>
+    <span class="zh">主浩成 · 福州大学 2027届</span>
+    <span class="en">Haocheng Zhu · Fuzhou University, Class of 2027</span>
+  </p>
   <p>QUANT · CONSULTING · FINTECH</p>
 </footer>
 
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'zh' ? 'zh' : 'en';
+  }
+</script>
 </body>
 </html>
